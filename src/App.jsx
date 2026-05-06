@@ -4,10 +4,12 @@ import SearchBar from "./components/SearchBar";
 import Spinner from "./components/Spinner";
 import Error from "./components/Error";
 import MovieCard from "./components/MovieCard";
+import MovieDetailsModal from "./components/MovieDetailsModal";
 
 function App(){
   const [movies, setMovies] = useState([]);
-  const [favourites, setFavorites] = useState('');
+  const [favorites, setFavorites] = useState([]);
+  const [initialized, setInitialized] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -17,6 +19,19 @@ function App(){
   const [view, setView] = useState('search'); //search or favourite
 
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem
+      ("favorites")) || [];
+      setFavorites(storedFavorites);
+      setInitialized(true);
+  },[]);
+
+  useEffect(() =>{
+    if(initialized){
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+  }, [favorites, initialized]);
 
   useEffect(() => {
     if (view === 'favorites') {
@@ -56,7 +71,44 @@ function App(){
     setSearchTerm(term);
     setPage(1);
   }
-  const displayedMovies = movies;
+
+  const openModal = async (movieId) => {
+    setError(null);
+    try{
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/${movideId}?api_key=${API_KEY}`
+      );
+      if(!res.ok) throw new Error("Failed to fetch movie details");
+      const data = await res.json();
+      setSelectedMovie(data);
+    }catch(err){
+      setError("Failed to fetch movie details.");
+    }
+  }
+
+  const colseModal = () => setSelectedMovie(null);
+
+  const toggleFavorite = (movie) => {
+    const exists = favorites.some((f) => f.id === movie.id);
+    if(exists){
+      setFavorites(favourites.filter((f) => f.id !== movie.id));
+    }else{
+      const favMovie = {
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        release_date: movie.release_date,
+        overview: movie.overview,
+        vote_average: movie.vote_average
+      };
+      setFavorites([...favorites,favMovie]);
+    }
+  }
+
+  const isFavorite = (movieId) => favorites.some((f) => f.id ===
+  movieId);
+
+  const displayedMovies = view === "search" ? movies : favorites;
 
   // Menu
   return <div className = "container mx-auto p-4 flex flex-col items-center text-center">
@@ -72,7 +124,7 @@ function App(){
       <a className={`tab text-lg ${view === "favorites" ? 
         "tab-active" : ""}`}
         onClick={()=> setView("favorites")}>
-            Favorites
+            Favorites ({favorites.length})
       </a>
     </div>
     
@@ -95,11 +147,19 @@ function App(){
       <div className="grid grid-cols-1 sm:grid-cols-2 
       md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {displayedMovies.map((movie =>(
-          <MovieCard key={movie.id} movie={movie}/>
+          <MovieCard key={movie.id} movie={movie} onToggleFavorite = 
+          {toggleFavorite} isFavorite = {isFavorite(movie.id)}/> 
         )))}
       </div>
     )}
 
+    {selectedMovie && (
+      <MovieDetailsModal 
+      movie={selectedMovie} 
+      onClose={colseModal}
+      isFavorite={isFavorite(selectedMovie.id)}
+      onToggleFavorite={toggleFavorite(selectedMovie)}/>
+    )}
   </div>;
 }
 

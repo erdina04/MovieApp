@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MovieCard = ({movie}) => {
+const MovieCard = ({movie, onToggleFavorite, isFavorite}) => {
 
     const posterUrl = movie.poster_path
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
@@ -20,7 +20,8 @@ const MovieCard = ({movie}) => {
                 <p className="text-gray-300 mb-4">{movie.release_date ? movie.release_date.substring(0,4) : "N/A" }</p>
                 <div className="flex gap-2">
                     <button className="btn btn-sm btn-primary">Details</button>
-                    <button className="btn tbn-sm">Add to Favorite</button>
+                    <button onClick={() => onToggleFavorite(movie)}
+                    className={`btn btn-sm ${isFavorite ? "btn-error" : "btn-seconadry"}`}>{isFavorite ? "Remove" : "Favorite"}</button>
                 </div>
             </div>
 
