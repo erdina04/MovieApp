@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import SearchBar from "./components/SearchBar.jsx"; 
 
 function App(){
   const [movies, setMovies] = useState([]);
@@ -48,6 +49,12 @@ function App(){
   fetchMovies();
 }, [view, searchTerm, page, API_KEY]);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setPage(1);
+  }
+
+  // Menu
   return <div className = "container mx-auto p-4 flex flex-col items-center text-center">
     <h1 className="text-4x1 font-extrabold mb-6 drop-shadow-2x1">Movie App</h1>
     <div className="tabs tabs-border mb-6">
@@ -64,6 +71,12 @@ function App(){
             Favorites
       </a>
     </div>
+    
+    {view === "search" && (
+      <div className="w-full max-w-md mb-6">
+        <SearchBar onSearch = {handleSearch}/>
+      </div>
+    )}
   </div>;
 }
 
