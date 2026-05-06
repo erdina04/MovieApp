@@ -74,7 +74,7 @@ function App(){
   }
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPage) {
+    if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
     }
   }

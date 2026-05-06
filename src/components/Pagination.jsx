@@ -13,8 +13,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             {/* Butoni për faqen e parë */}
             <button 
                 className="btn" 
-                disabled={currentPage === 1} 
-                onClick={() => onPageChange(1)}
+                disabled={currentPage === totalPages} 
+                onClick={() => onPageChange(totalPages)}
             >
                 ←
             </button>
@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
             {/* Listimi i faqeve */}
             {pages.map((page) => (
-                <button 
+                <button
                     key={page}
                     className={`btn ${page === currentPage ? "btn-primary" : ""}`} 
                     onClick={() => onPageChange(page)}

@@ -9,8 +9,14 @@ const SearchBar = ({onSearch}) => {
     }
     return (
         // search
-        <form onSubmit={handleSubmit}>
-            <input type="text"value={term} onChange={(e) => setTerm(e.target.value)} placeholder='Search movies...' className='input input-success'/>
+        <form onSubmit={handleSubmit} className='flex gap-2 justify-center mb-4'>
+            <input type="text"
+            value={term} 
+            onChange={(e) => 
+            setTerm(e.target.value)}
+            placeholder='Search movies...' 
+            className='input input-success'/>
+            <button type='submit' className='btn btn-success'>Search</button>
         </form>
     )
 }
