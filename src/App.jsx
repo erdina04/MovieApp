@@ -86,12 +86,14 @@ function App(){
     {error && <ErrorMessage message={error}/>}
     {!loading && !error && displayedMovies.length === 0 &&(
       <div>
-        No movies found.{" "}{view === "favorites" ? "Add some to your favorites!": "Try a different search."}
+        No movies found.{" "}
+        {view === "favorites" ? "Add some to your favorites!"
+        : "Try a different search."}
       </div>
     )}
-    {!loading && !error && displayedMovies.length === 0 &&(
+    {!loading && !error && displayedMovies.length > 0 &&(
       <div className="grid grid-cols-1 sm:grid-cols-2 
-      md:grid-cols-3 llg:grid-cols-4 gap-4 w-full">
+      md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {displayedMovies.map((movie =>(
           <MovieCard key={movie.id} movie={movie}/>
         )))}
