@@ -14,7 +14,30 @@ const MovieDetailsModal = ({movie, onClose, isFavorite, onToggleFavorite}) => {
                 <img src={posterUrl} alt={movie.title} className="rounded-lg mb-4 w-full
                 object-contain max-h-96"/>
                 {/* Description */}
+                <div>
+                    <p className='leading-relaxed'>{movie.overview}</p>
+                    <p className='font-semibold'>
+                        <span>Release Date</span> {movie.release_date || "N/A"}
+                    </p>
+                    <p className='font-semibold'>
+                        <span>Rating</span> {movie.release_date || "N/A"}
+                    </p>
+                    <p className='font-semibold'>
+                        <span>Genres:</span> {movie.genres ? movie.genres.map(g => g.name).join(", "): "N/A"}
+                    </p>
+                </div>
+                {/* Buttons */}
+                <div className='flex flex-wrap gap-3 justify-end mt-6'>
+                    <button className={`btn ${isFavorite ? "btn-error" : "btn-secondary"}`}>
+                        {isFavorite ? "Remove from Favorites" : "Add to favorites"}
+                    </button>
+                    <button className='btn' onClick={onClose}>
+                        Close
+                    </button>
+                </div>
             </div>
+            {/* Modal Backdrop*/}
+            <div className='modal-backdrop' onClick={onClose}></div>
         </div>
     )
 }
