@@ -34,16 +34,37 @@ function App(){
         throw new Error("Failed to fetch movies");
       }
       const data = await res.json();
+      console.log(data);
       setMovies(data.results);
-      setTotalPages(data.total_pages);
-      setLoading(false);
+      setTotalPages(Math.min(data.total_pages || 0, 500)); //TMDB API max page limit
     }
     catch (err) {
       setError("Failed to fetch movies");
     }
+    finally {
+      setLoading(false);
+    }
   }
-});
-  return <div>Movie App</div>;
+  fetchMovies();
+}, [view, searchTerm, page, API_KEY]);
+
+  return <div className = "container mx-auto p-4 flex flex-col items-center text-center">
+    <h1 className="text-4x1 font-extrabold mb-6 drop-shadow-2x1">Movie App</h1>
+    <div className="tabs tabs-border mb-6">
+      <a className={`tab text-lg ${view === "search" ? 
+        "tab-active" : ""}`} 
+        onClick={()=> {
+        setView("search");
+        setPage(1)}}>
+          Search / Popular
+        </a>
+      <a className={`tab text-lg ${view === "favorites" ? 
+        "tab-active" : ""}`}
+        onClick={()=> setView("favorites")}>
+            Favorites
+      </a>
+    </div>
+  </div>;
 }
 
 export default App;
