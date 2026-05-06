@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import SearchBar from "./components/SearchBar.jsx"; 
+import SearchBar from "./components/SearchBar"; 
+import Spinner from "./components/Spinner";
+import Error from "./components/Error";
+import MovieCard from "./components/MovieCard";
 
 function App(){
   const [movies, setMovies] = useState([]);
@@ -53,6 +56,7 @@ function App(){
     setSearchTerm(term);
     setPage(1);
   }
+  const displayedMovies = movies;
 
   // Menu
   return <div className = "container mx-auto p-4 flex flex-col items-center text-center">
@@ -77,6 +81,23 @@ function App(){
         <SearchBar onSearch = {handleSearch}/>
       </div>
     )}
+
+    {loading && <Spinner/>}
+    {error && <ErrorMessage message={error}/>}
+    {!loading && !error && displayedMovies.length === 0 &&(
+      <div>
+        No movies found.{" "}{view === "favorites" ? "Add some to your favorites!": "Try a different search."}
+      </div>
+    )}
+    {!loading && !error && displayedMovies.length === 0 &&(
+      <div className="grid grid-cols-1 sm:grid-cols-2 
+      md:grid-cols-3 llg:grid-cols-4 gap-4 w-full">
+        {displayedMovies.map((movie =>(
+          <MovieCard key={movie.id} movie={movie}/>
+        )))}
+      </div>
+    )}
+
   </div>;
 }
 
