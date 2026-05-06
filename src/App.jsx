@@ -76,7 +76,7 @@ function App(){
     setError(null);
     try{
       const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${movideId}?api_key=${API_KEY}`
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`
       );
       if(!res.ok) throw new Error("Failed to fetch movie details");
       const data = await res.json();
@@ -91,7 +91,7 @@ function App(){
   const toggleFavorite = (movie) => {
     const exists = favorites.some((f) => f.id === movie.id);
     if(exists){
-      setFavorites(favourites.filter((f) => f.id !== movie.id));
+      setFavorites(favorites.filter((f) => f.id !== movie.id));
     }else{
       const favMovie = {
         id: movie.id,
@@ -163,7 +163,7 @@ function App(){
       movie={selectedMovie} 
       onClose={colseModal}
       isFavorite={isFavorite(selectedMovie.id)}
-      onToggleFavorite={toggleFavorite(selectedMovie)}/>
+      onToggleFavorite={() => toggleFavorite(selectedMovie)}/>
     )}
   </div>;
 }

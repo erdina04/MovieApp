@@ -14,13 +14,13 @@ const MovieDetailsModal = ({movie, onClose, isFavorite, onToggleFavorite}) => {
                 <img src={posterUrl} alt={movie.title} className="rounded-lg mb-4 w-full
                 object-contain max-h-96"/>
                 {/* Description */}
-                <div>
+                <div className='text-left space-y-2'>
                     <p className='leading-relaxed'>{movie.overview}</p>
                     <p className='font-semibold'>
                         <span>Release Date</span> {movie.release_date || "N/A"}
                     </p>
                     <p className='font-semibold'>
-                        <span>Rating</span> {movie.release_date || "N/A"}
+                        <span>Rating</span> {movie.vote_average || "N/A"}
                     </p>
                     <p className='font-semibold'>
                         <span>Genres:</span> {movie.genres ? movie.genres.map(g => g.name).join(", "): "N/A"}
@@ -28,7 +28,8 @@ const MovieDetailsModal = ({movie, onClose, isFavorite, onToggleFavorite}) => {
                 </div>
                 {/* Buttons */}
                 <div className='flex flex-wrap gap-3 justify-end mt-6'>
-                    <button className={`btn ${isFavorite ? "btn-error" : "btn-secondary"}`}>
+                    <button onClick={onToggleFavorite}
+                    className={`btn ${isFavorite ? "btn-error" : "btn-secondary"}`}>
                         {isFavorite ? "Remove from Favorites" : "Add to favorites"}
                     </button>
                     <button className='btn' onClick={onClose}>
