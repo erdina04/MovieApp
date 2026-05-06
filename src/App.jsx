@@ -135,7 +135,7 @@ function App(){
     )}
 
     {loading && <Spinner/>}
-    {error && <ErrorMessage message={error}/>}
+    {error && <Error message={error}/>}
     {!loading && !error && displayedMovies.length === 0 &&(
       <div>
         No movies found.{" "}
@@ -146,10 +146,15 @@ function App(){
     {!loading && !error && displayedMovies.length > 0 &&(
       <div className="grid grid-cols-1 sm:grid-cols-2 
       md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {displayedMovies.map((movie =>(
-          <MovieCard key={movie.id} movie={movie} onToggleFavorite = 
-          {toggleFavorite} isFavorite = {isFavorite(movie.id)}/> 
-        )))}
+        {displayedMovies.map((movie) =>(
+          <MovieCard 
+          key={movie.id} 
+          movie={movie} 
+          onToggleFavorite = {toggleFavorite} 
+          isFavorite = {isFavorite(movie.id)}
+          onViewDetails = {openModal}
+          /> 
+        ))}
       </div>
     )}
 
