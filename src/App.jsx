@@ -5,6 +5,7 @@ import Spinner from "./components/Spinner";
 import Error from "./components/Error";
 import MovieCard from "./components/MovieCard";
 import MovieDetailsModal from "./components/MovieDetailsModal";
+import Pagination from "./components/Pagination";
 
 function App(){
   const [movies, setMovies] = useState([]);
@@ -70,6 +71,12 @@ function App(){
   const handleSearch = (term) => {
     setSearchTerm(term);
     setPage(1);
+  }
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPage) {
+      setPage(newPage);
+    }
   }
 
   const openModal = async (movieId) => {
@@ -155,6 +162,15 @@ function App(){
           onViewDetails = {openModal}
           /> 
         ))}
+      </div>
+    )}
+
+    {view === "search" && totalPages >1 && !loading && !error && (
+      <div className="mt-6">
+        <Pagination 
+        currentPage ={page} 
+        totalPages ={totalPages}
+        onPageChange = {handlePageChange}/>
       </div>
     )}
 
